@@ -1,9 +1,10 @@
-package io.github.qaguru.allure;
+package yanotHomeWork06;
 
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.logevents.LogEventListener;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.*;
 import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selectors.withText;
@@ -12,21 +13,25 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.openqa.selenium.By.linkText;
 import static org.openqa.selenium.By.partialLinkText;
 
-public class SelenideTest {
+public class SelenideTestListener extends TestBase {
 
     @Test
-    public void testGithub() {
+    @Owner("Yanotiki")
+    @Feature("Проверка репозитория")
+    @Story("Проверка репозитория DiUS/java-faker")
+    @Severity(SeverityLevel.CRITICAL)
+    @DisplayName("Проверяем вкладку ISSUE в репозитории DiUS/java-faker")
+
+    public void testListener() {
         SelenideLogger.addListener("allure", new AllureSelenide());
 
-        open("https://github.com");
-
+        open(URL);
         $(".header-search-input").click();
-        $(".header-search-input").sendKeys("eroshenkoam/allure-example");
+        $(".header-search-input").sendKeys(REPOSITORY);
         $(".header-search-input").submit();
-
-        $(linkText("eroshenkoam/allure-example")).click();
+        $(linkText(REPOSITORY)).click();
         $(partialLinkText("Issues")).click();
-        $(withText("#68")).should(Condition.visible);
+        $(withText("#" + TestBase.ISSUE_NUMBER)).should(Condition.visible);
     }
-
 }
+
